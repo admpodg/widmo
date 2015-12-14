@@ -10,28 +10,28 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 
-public class DataConverter {
+public class DataConverter  {
 
-    private double outputvalues;
+    public static double[] convertBytetoDouble(ByteArrayOutputStream bufor) {
 
-
-    public static void convertBytetoDouble(ByteArrayOutputStream bufor) {
-      short val;
-        ByteBuffer bb=ByteBuffer.allocate(2);
+       ByteBuffer bb=ByteBuffer.allocate(2);
        bb.order(ByteOrder.BIG_ENDIAN);
 
         byte[] temp = bufor.toByteArray();
-
-
+        double [] converted = new double [temp.length/2];
+        byte bajt = 0;
         for (int i = 0; i <temp.length; i=i+2) {
+
 
             bb.put(temp[i]);
             bb.put(temp[i+1]);
-            val=bb.getShort(0);
-            System.out.println(val);
+            short val = bb.getShort(0);
+            converted[i/2]=(double)val;
             bb.clear();
+
         }
 
+return  converted;
 
     }
 }

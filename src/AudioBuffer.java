@@ -11,22 +11,20 @@ import java.io.ByteArrayOutputStream;
 public class AudioBuffer {
 
     private TargetDataLine mic; // linia udostępniająca strumień danych z mikrofonu
-    private byte[] temp = new byte[128];   // tablica będąca tymczasowym cząstkowym buforem
+    private byte[] temp;   // tablica będąca tymczasowym cząstkowym buforem
     private ByteArrayOutputStream buffer = new ByteArrayOutputStream();  // strumień bedący właściwym buforem danych, na którym są prowadzone dalsze obliczenia
 
-    private double double_temp;
+
     public int numbytes;
 
     public void prepareAudioBuffer(int bufferSize) {
         AudioFormat format = new AudioFormat(44100.0f,16,1,true,true);
-
+        temp = new byte [2*bufferSize];
         // Obtain and open the line.
         try {
 
             mic = AudioSystem.getTargetDataLine(format);
             mic.open(format,bufferSize);
-            mic.start();
-
 
 
 
@@ -41,19 +39,31 @@ public class AudioBuffer {
         }
 
 
-
     }
 
 
-    public ByteArrayOutputStream getData() {//tu trza dopisać funkcję, która czyta audio
-
-        if (mic.isOpen()) System.out.println("urządzenie wejściowe jest otwarte");
-        numbytes= mic.read(temp,0,temp.length);
-
-        buffer.write(temp,0,numbytes);
+    public ByteArrayOutputStream getData() {
+        buffer.reset();
+        if (mic.isOpen()) {
+            numbytes = mic.read(temp, 0, temp.length);
+            buffer.write(temp, 0, numbytes);
+        }
         return buffer;
 
     }
+
+    public void startAudio(){
+        mic.start();
+
+    }
+
+    public void stopAudio(){
+
+         mic.stop();
+        // mic.close();
+
+    }
+
 
 
 

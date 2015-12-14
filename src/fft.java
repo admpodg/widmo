@@ -3,21 +3,29 @@
 
 public class fft {
 
+
+
+
+
     /*
      * Computes the discrete Fourier transform (DFT) of the given complex vector, storing the result back into the vector.
      * The vector can have any length. This is a wrapper function.
      */
-    public static void transform(double[] real, double[] imag) {
+    public static double[][] transform(double[] real, double[] imag) {
+
+        double [][] complex = new double [2][real.length];
+
         if (real.length != imag.length)
             throw new IllegalArgumentException("Mismatched lengths");
 
         int n = real.length;
         if (n == 0)
-            return;
+            System.exit(0);
         else if ((n & (n - 1)) == 0)  // Is power of 2
-            transformRadix2(real, imag);
+            complex= transformRadix2(real, imag);
 
 
+return complex;
     }
 
 
@@ -25,8 +33,11 @@ public class fft {
      * Computes the discrete Fourier transform (DFT) of the given complex vector, storing the result back into the vector.
      * The vector's length must be a power of 2. Uses the Cooley-Tukey decimation-in-time radix-2 algorithm.
      */
-    public static void transformRadix2(double[] real, double[] imag) {
+    public static double [][] transformRadix2(double[] real, double[] imag) {
         // Initialization
+
+        double [][] temporary = new double[2][real.length];
+
         if (real.length != imag.length)
             throw new IllegalArgumentException("Mismatched lengths");
         int n = real.length;
@@ -70,5 +81,10 @@ public class fft {
             if (size == n)  // Prevent overflow in 'size *= 2'
                 break;
         }
+
+        temporary[0]=real.clone();
+        temporary[1]=imag.clone();
+
+        return temporary;
     }
 }
