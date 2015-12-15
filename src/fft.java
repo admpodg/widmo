@@ -4,9 +4,6 @@
 public class fft {
 
 
-
-
-
     /*
      * Computes the discrete Fourier transform (DFT) of the given complex vector, storing the result back into the vector.
      * The vector can have any length. This is a wrapper function.

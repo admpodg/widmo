@@ -48,13 +48,13 @@ public class AudioBuffer {
             numbytes = mic.read(temp, 0, temp.length);
             buffer.write(temp, 0, numbytes);
         }
+
         return buffer;
 
     }
 
     public void startAudio(){
         mic.start();
-
     }
 
     public void stopAudio(){
